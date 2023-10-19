@@ -6,8 +6,8 @@ const getProducts = async (_req, res) => {
   return res.status(mapStatusHTTP(status)).json(data);
 };
 
-const getProductsById = async (_req, res) => {
-  const { id } = _req.params;
+const getProductsById = async (req, res) => {
+  const { id } = req.params;
   const { status, data } = await productService.getProductById(id);
   return res.status(mapStatusHTTP(status)).json(data);
 };
