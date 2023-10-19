@@ -8,6 +8,7 @@ const {
   productFromModel,
   productIdFromDB,
   productIdFromModel,
+  newProductFromDB,
 } = require('../mocks/product.mock');
 
 describe('Product Model', function () {
@@ -27,6 +28,15 @@ describe('Product Model', function () {
 
     expect(product).to.be.an('object');
     expect(product).to.be.deep.equal(productIdFromModel);
+  });
+  it('Insere um novo produto com sucesso', async function () {
+    sinon.stub(connection, 'execute').resolves([newProductFromDB]);
+
+    const inputData = 'ProdutoX';
+    const product = await productModel.insert(inputData);
+
+    expect(product).to.be.an('number');
+    expect(product).to.be.equal(4);
   });
   afterEach(function () {
     sinon.restore();

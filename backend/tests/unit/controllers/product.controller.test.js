@@ -13,6 +13,8 @@ const {
   productServiceSuccessful,
   productIDServiceSuccessful,
   productIDServiceNotFound,
+  newProductFromModel,
+  newProductServiceSuccessful,
 } = require('../mocks/product.mock');
 
 describe('Realizando testes - product controller', function () {
@@ -58,6 +60,20 @@ describe('Realizando testes - product controller', function () {
     await productController.getProductsById(req, res);
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith(sinon.match.has('message'));
+  });
+  it('Insere um novo produto com sucesso - 201', async function () {
+    sinon.stub(productService, 'insertProduct').resolves(newProductServiceSuccessful);
+    const req = {
+      body: { name: 'ProdutoX' },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await productController.insertProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(201);
+    expect(res.json).to.have.been.calledWith(newProductFromModel);
   });
   afterEach(function () {
     sinon.restore();

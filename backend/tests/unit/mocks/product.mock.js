@@ -49,6 +49,16 @@ const productIDServiceNotFound = {
   data: { message: 'message' },
 };
 
+const newProductFromDB = { insertId: 4 };
+const newProductFromModel = {
+  id: 4,
+  name: 'ProdutoX',
+};
+const newProductServiceSuccessful = {
+  status: 'CREATED',
+  data: newProductFromModel,
+};
+
 module.exports = {
   productFromDB,
   productFromModel,
@@ -57,4 +67,7 @@ module.exports = {
   productServiceSuccessful,
   productIDServiceSuccessful,
   productIDServiceNotFound,
+  newProductFromDB,
+  newProductFromModel,
+  newProductServiceSuccessful,
 };
