@@ -36,12 +36,25 @@ const productIdFromModel = {
   name: 'Martelo de Thor',
 };
 
-const productErrorDB = undefined;
+const productServiceSuccessful = {
+  status: 'SUCCESSFUL',
+  data: productFromModel,
+};
+const productIDServiceSuccessful = {
+  status: 'SUCCESSFUL',
+  data: productIdFromModel,
+};
+const productIDServiceNotFound = {
+  status: 'NOT_FOUND',
+  data: { message: 'message' },
+};
 
 module.exports = {
   productFromDB,
   productFromModel,
   productIdFromDB,
   productIdFromModel,
-  productErrorDB,
+  productServiceSuccessful,
+  productIDServiceSuccessful,
+  productIDServiceNotFound,
 };
