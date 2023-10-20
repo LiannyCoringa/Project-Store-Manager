@@ -58,6 +58,14 @@ const newProductServiceSuccessful = {
   status: 'CREATED',
   data: newProductFromModel,
 };
+const newProductServiceInvalidValue = {
+  status: 'INVALID_VALUE',
+  data: { message: 'message' },
+};
+const newProductServiceBadRequest = {
+  status: 'BAD_REQUEST',
+  data: { message: 'message' },
+};
 
 module.exports = {
   productFromDB,
@@ -70,4 +78,6 @@ module.exports = {
   newProductFromDB,
   newProductFromModel,
   newProductServiceSuccessful,
+  newProductServiceInvalidValue,
+  newProductServiceBadRequest,
 };

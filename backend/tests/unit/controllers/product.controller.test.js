@@ -15,6 +15,8 @@ const {
   productIDServiceNotFound,
   newProductFromModel,
   newProductServiceSuccessful,
+  newProductServiceInvalidValue,
+  newProductServiceBadRequest,
 } = require('../mocks/product.mock');
 
 describe('Realizando testes - product controller', function () {
@@ -74,6 +76,34 @@ describe('Realizando testes - product controller', function () {
 
     expect(res.status).to.have.been.calledWith(201);
     expect(res.json).to.have.been.calledWith(newProductFromModel);
+  });
+  it('Insere um novo produto com falha - 422', async function () {
+    sinon.stub(productService, 'insertProduct').resolves(newProductServiceInvalidValue);
+    const req = {
+      body: { name: 'Prod' },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await productController.insertProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(422);
+    expect(res.json).to.have.been.calledWith(sinon.match.has('message'));
+  });
+  it('Insere um novo produto com falha - 400', async function () {
+    sinon.stub(productService, 'insertProduct').resolves(newProductServiceBadRequest);
+    const req = {
+      body: { name: '' },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await productController.insertProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(400);
+    expect(res.json).to.have.been.calledWith(sinon.match.has('message'));
   });
   afterEach(function () {
     sinon.restore();
