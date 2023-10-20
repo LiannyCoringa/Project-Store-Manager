@@ -31,7 +31,8 @@ const insertSaleProduct = async (saleId, productId, quantity) => {
     'INSERT INTO sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
     [saleId, productId, quantity],
   );
-  return sales;
+  const { insertId } = sales;
+  return insertId;
 };
 
 module.exports = {

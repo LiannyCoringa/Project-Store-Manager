@@ -78,6 +78,25 @@ const salesIDServiceNotFound = {
   data: { message: 'message' },
 };
 
+const newSalesFromDB = {
+  insertId: 4,
+};
+
+const newSalesFromModel = {
+  id: 4,
+  itemsSold: [
+    {
+      productId: 1,
+      quantity: 5,
+    },
+  ],
+};
+
+const newSalesServiceSuccessful = {
+  status: 'CREATED',
+  data: newSalesFromModel,
+};
+
 module.exports = {
   salesFromDB,
   salesFromModel,
@@ -86,4 +105,7 @@ module.exports = {
   salesServiceSuccessful,
   salesIDServiceSuccessful,
   salesIDServiceNotFound,
+  newSalesFromDB,
+  newSalesFromModel,
+  newSalesServiceSuccessful,
 };
