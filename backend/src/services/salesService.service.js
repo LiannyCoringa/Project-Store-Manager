@@ -14,6 +14,7 @@ const insertSales = async (itemsSold) => {
   const id = await salesModel.insertSale();
   itemsSold.map(async (item) => {
     await salesModel.insertSaleProduct(id, item.productId, item.quantity);
+    return null;
   });
   return { status: 'CREATED', data: { id, itemsSold } };
 };
