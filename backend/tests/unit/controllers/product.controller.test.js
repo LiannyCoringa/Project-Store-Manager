@@ -170,6 +170,21 @@ describe('Realizando testes - product controller', function () {
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith(sinon.match.has('message'));
   });
+  it('Remove um produto com sucesso - 204', async function () {
+    sinon.stub(productService, 'deleteProduct').resolves({ status: 'NO_CONTENT' });
+    const req = {
+      params: { id: 1 },
+      body: { },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await productController.deleteProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(204);
+    expect(res.json).to.have.been.calledWith();
+  });
   afterEach(function () {
     sinon.restore();
   });

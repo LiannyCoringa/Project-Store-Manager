@@ -48,6 +48,15 @@ describe('Product Model', function () {
     expect(product).to.be.an('object');
     expect(product).to.be.deep.equal(updateProductFromModel);
   });
+  it('Deleta um produto com sucesso', async function () {
+    sinon.stub(connection, 'execute').resolves([productFromDB]);
+
+    const inputData = 1;
+    const product = await productModel.deleteProducts(inputData);
+
+    expect(product).to.be.an('array');
+    expect(product).to.be.deep.equal(productFromModel);
+  });
   afterEach(function () {
     sinon.restore();
   });
