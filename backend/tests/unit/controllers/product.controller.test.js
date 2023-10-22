@@ -181,7 +181,6 @@ describe('Realizando testes - product controller', function () {
       json: sinon.stub(),
     };
     await productController.deleteProduct(req, res);
-
     expect(res.status).to.have.been.calledWith(204);
     expect(res.json).to.have.been.calledWith();
   });
