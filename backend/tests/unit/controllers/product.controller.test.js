@@ -17,6 +17,11 @@ const {
   newProductServiceSuccessful,
   newProductServiceInvalidValue,
   newProductServiceBadRequest,
+  updateProductFromModel,
+  updateProductServiceSuccessful,
+  updateProductServiceInvalidValue,
+  updateProductServiceBadRequest,
+  updateProductServiceNotFound,
 } = require('../mocks/product.mock');
 
 describe('Realizando testes - product controller', function () {
@@ -103,6 +108,66 @@ describe('Realizando testes - product controller', function () {
     await productController.insertProduct(req, res);
 
     expect(res.status).to.have.been.calledWith(400);
+    expect(res.json).to.have.been.calledWith(sinon.match.has('message'));
+  });
+  it('Atualiza um produto com sucesso - 200', async function () {
+    sinon.stub(productService, 'updateProduct').resolves(updateProductServiceSuccessful);
+    const req = {
+      params: { id: 1 },
+      body: { name: 'ProdutoX' },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await productController.updateProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(updateProductFromModel);
+  });
+  it('Atualiza um produto com falha - 422', async function () {
+    sinon.stub(productService, 'updateProduct').resolves(updateProductServiceInvalidValue);
+    const req = {
+      params: { id: 1 },
+      body: { name: 'Prod' },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await productController.updateProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(422);
+    expect(res.json).to.have.been.calledWith(sinon.match.has('message'));
+  });
+  it('Atualiza um produto com falha - 400', async function () {
+    sinon.stub(productService, 'updateProduct').resolves(updateProductServiceBadRequest);
+    const req = {
+      params: { id: 1 },
+      body: { name: '' },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await productController.updateProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(400);
+    expect(res.json).to.have.been.calledWith(sinon.match.has('message'));
+  });
+  it('Atualiza um produto com falha - 404', async function () {
+    sinon.stub(productService, 'updateProduct').resolves(updateProductServiceNotFound);
+    const req = {
+      params: { id: 999 },
+      body: { name: 'ProdutoX' },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await productController.updateProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith(sinon.match.has('message'));
   });
   afterEach(function () {

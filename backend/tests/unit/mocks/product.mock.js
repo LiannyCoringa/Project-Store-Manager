@@ -67,6 +67,27 @@ const newProductServiceBadRequest = {
   data: { message: 'message' },
 };
 
+const updateProductFromModel = {
+  id: 1,
+  name: 'ProdutoX',
+};
+const updateProductServiceSuccessful = {
+  status: 'SUCCESSFUL',
+  data: updateProductFromModel,
+};
+const updateProductServiceInvalidValue = {
+  status: 'INVALID_VALUE',
+  data: { message: 'message' },
+};
+const updateProductServiceBadRequest = {
+  status: 'BAD_REQUEST',
+  data: { message: 'message' },
+};
+const updateProductServiceNotFound = {
+  status: 'NOT_FOUND',
+  data: { message: 'message' },
+};
+
 module.exports = {
   productFromDB,
   productFromModel,
@@ -80,4 +101,9 @@ module.exports = {
   newProductServiceSuccessful,
   newProductServiceInvalidValue,
   newProductServiceBadRequest,
+  updateProductFromModel,
+  updateProductServiceSuccessful,
+  updateProductServiceInvalidValue,
+  updateProductServiceBadRequest,
+  updateProductServiceNotFound,
 };

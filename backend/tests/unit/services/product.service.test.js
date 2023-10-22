@@ -9,6 +9,7 @@ const {
   productIdFromModel,
   newProductFromDB,
   newProductFromModel,
+  updateProductFromModel,
 } = require('../mocks/product.mock');
 
 describe('Realizando testes - product service', function () {
@@ -67,6 +68,46 @@ describe('Realizando testes - product service', function () {
 
     expect(product.status).to.equal('BAD_REQUEST');
     expect(product.data.message).to.equal('"name" is required');
+  });
+  it('Atualiza um produto com sucesso', async function () {
+    sinon.stub(productModel, 'findById').resolves(productIdFromDB);
+    sinon.stub(productModel, 'update').resolves(updateProductFromModel);
+
+    const inputData = { id: 1, name: 'ProdutoX' };
+    const product = await productService.updateProduct(inputData.id, inputData.name);
+
+    expect(product.status).to.equal('SUCCESSFUL');
+    expect(product.data).to.be.deep.equal(updateProductFromModel);
+  });
+  it('Não atualiza quando o name tem menos de 5 caracteres', async function () {
+    sinon.stub(productModel, 'findById').resolves(productIdFromDB);
+    sinon.stub(productModel, 'update').resolves(updateProductFromModel);
+
+    const inputData = { id: 1, name: 'Prod' };
+    const product = await productService.updateProduct(inputData.id, inputData.name);
+
+    expect(product.status).to.equal('INVALID_VALUE');
+    expect(product.data.message).to.equal('"name" length must be at least 5 characters long');
+  });
+  it('Não atualiza quando o name for undefined', async function () {
+    sinon.stub(productModel, 'findById').resolves(productIdFromDB);
+    sinon.stub(productModel, 'update').resolves(updateProductFromModel);
+
+    const inputData = { id: 1, name: '' };
+    const product = await productService.updateProduct(inputData.id, inputData.name);
+
+    expect(product.status).to.equal('BAD_REQUEST');
+    expect(product.data.message).to.equal('"name" is required');
+  });
+  it('Não atualiza quando o produto não existe', async function () {
+    sinon.stub(productModel, 'findById').resolves(undefined);
+    sinon.stub(productModel, 'update').resolves(updateProductFromModel);
+
+    const inputData = { id: 999, name: 'ProdutoX' };
+    const product = await productService.updateProduct(inputData.id, inputData.name);
+
+    expect(product.status).to.equal('NOT_FOUND');
+    expect(product.data.message).to.equal('Product not found');
   });
   afterEach(function () {
     sinon.restore();

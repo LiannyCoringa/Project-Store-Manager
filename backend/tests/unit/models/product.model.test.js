@@ -9,6 +9,7 @@ const {
   productIdFromDB,
   productIdFromModel,
   newProductFromDB,
+  updateProductFromModel,
 } = require('../mocks/product.mock');
 
 describe('Product Model', function () {
@@ -37,6 +38,15 @@ describe('Product Model', function () {
 
     expect(product).to.be.an('number');
     expect(product).to.be.equal(4);
+  });
+  it('Atualiza um produto com sucesso', async function () {
+    sinon.stub(connection, 'execute').resolves([updateProductFromModel]);
+
+    const inputData = { id: 1, name: 'ProdutoX' };
+    const product = await productModel.update(inputData.id, inputData.name);
+
+    expect(product).to.be.an('object');
+    expect(product).to.be.deep.equal(updateProductFromModel);
   });
   afterEach(function () {
     sinon.restore();
