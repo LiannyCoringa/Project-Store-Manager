@@ -102,6 +102,13 @@ const delSalesFromDB = {
   date,
 };
 
+const updateSale = {
+  date: ['Date: 2021-09-09T04:54:29.000Z'],
+  productId: 1,
+  quantity: 10,
+  saleId: 1,
+};
+
 module.exports = {
   salesFromDB,
   salesFromModel,
@@ -114,4 +121,5 @@ module.exports = {
   newSalesFromModel,
   newSalesServiceSuccessful,
   delSalesFromDB,
+  updateSale,
 };

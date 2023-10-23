@@ -10,6 +10,7 @@ const {
   salesIdFromModel,
   newSalesFromDB,
   delSalesFromDB,
+  updateSale,
 } = require('../mocks/sales.mock');
 
 describe('Sales Model', function () {
@@ -53,6 +54,14 @@ describe('Sales Model', function () {
 
     expect(sales).to.be.an('Object');
     expect(sales).to.be.deep.equal(delSalesFromDB);
+  });
+  it('Atualizando sales com sucesso', async function () {
+    sinon.stub(connection, 'execute').resolves([updateSale]);
+
+    const sales = await salesModel.updateSale(1, 1, 10);
+
+    expect(sales).to.be.an('Object');
+    expect(sales).to.be.deep.equal(updateSale);
   });
   afterEach(function () {
     sinon.restore();

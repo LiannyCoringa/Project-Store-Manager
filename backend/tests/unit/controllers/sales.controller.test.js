@@ -147,6 +147,66 @@ describe('Realizando testes - sales controller', function () {
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith(sinon.match.has('message'));
   });
+  it('Atualiza um sale com sucesso - 200', async function () {
+    sinon.stub(salesService, 'updateSale').resolves({ status: 'SUCCESSFUL', data: { id: 1, productId: 1, quantity: 5 } });
+    const req = {
+      params: { saleId: 1, productId: 1 },
+      body: { quantity: 5 },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await salesController.updateSale(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(sinon.match.has('id'));
+  });
+  it('Atualiza um sale com falha - 422', async function () {
+    sinon.stub(salesService, 'updateSale').resolves({ status: 'INVALID_VALUE', data: { message: '"quantity" must be greater than or equal to 1' } });
+    const req = {
+      params: { saleId: 1, productId: 1 },
+      body: { quantity: 0 },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await salesController.updateSale(req, res);
+
+    expect(res.status).to.have.been.calledWith(422);
+    expect(res.json).to.have.been.calledWith(sinon.match.has('message'));
+  });
+  it('Atualiza um sale com falha em productId - 400', async function () {
+    sinon.stub(salesService, 'updateSale').resolves({ status: 'BAD_REQUEST', data: { message: '"productId" is required' } });
+    const req = {
+      params: { saleId: 1 },
+      body: { quantity: 5 },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await salesController.updateSale(req, res);
+
+    expect(res.status).to.have.been.calledWith(400);
+    expect(res.json).to.have.been.calledWith(sinon.match.has('message'));
+  });
+  it('Atualiza um sale com falha em quantity - 400', async function () {
+    sinon.stub(salesService, 'updateSale').resolves({ status: 'BAD_REQUEST', data: { message: '"quantity" is required' } });
+    const req = {
+      params: { saleId: 1, productId: 1 },
+      body: { },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await salesController.updateSale(req, res);
+
+    expect(res.status).to.have.been.calledWith(400);
+    expect(res.json).to.have.been.calledWith(sinon.match.has('message'));
+  });
   afterEach(function () {
     sinon.restore();
   });

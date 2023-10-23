@@ -35,9 +35,23 @@ const deleteSale = async (id) => {
   return { status: 'NO_CONTENT' };
 };
 
+const updateSale = async (saleId, productId, quantity) => {
+  const sale = await salesModel.findByIdSales(saleId);
+  if (sale.length === 0) return { status: 'NOT_FOUND', data: { message: 'Sale not found' } };
+  const product = await salesModel.findByIdProductSales(productId);
+  if (product.length === 0) {
+    return { status: 'NOT_FOUND', data: { message: 'Product not found in sale' } };
+  }
+  await salesModel.updateSale(saleId, productId, quantity);
+  const [data] = await salesModel.findByIdProductAndSales(saleId, productId);
+  return { status: 'SUCCESSFUL',
+    data };
+};
+
 module.exports = {
   getSales,
   getSalesById,
   insertSales,
   deleteSale,
+  updateSale,
 };
