@@ -11,14 +11,18 @@ const getSalesById = async (id) => {
 };
 
 const insertSales = async (itemsSold) => {
-  const id = await salesModel.insertSale();
-  itemsSold.forEach(async ({ productId }) => {
+  const data = itemsSold.map(async ({ productId }) => {
     const insertId = await productModel.findById(productId);
-    if (insertId.length === 0) {
+    if (!insertId) {
       return { status: 'NOT_FOUND', data: { message: 'Product not found' } };
     }
+    return false;
   });
 
+  const dataResult = await Promise.all(data);
+  if (dataResult.find((item) => !(!item))) return dataResult.find((item) => !(!item));
+
+  const id = await salesModel.insertSale();
   await itemsSold.map(async ({ productId, quantity }) =>
     salesModel.insertSaleProduct(id, productId, quantity));
   return { status: 'CREATED', data: { id, itemsSold } };
