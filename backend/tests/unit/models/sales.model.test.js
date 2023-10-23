@@ -9,6 +9,7 @@ const {
   salesIdFromDB,
   salesIdFromModel,
   newSalesFromDB,
+  delSalesFromDB,
 } = require('../mocks/sales.mock');
 
 describe('Sales Model', function () {
@@ -44,6 +45,14 @@ describe('Sales Model', function () {
 
     expect(sales).to.be.an('number');
     expect(sales).to.be.deep.equal(4);
+  });
+  it('Deletando sales com sucesso', async function () {
+    sinon.stub(connection, 'execute').resolves([delSalesFromDB]);
+
+    const sales = await salesModel.deleteSale(1);
+
+    expect(sales).to.be.an('Object');
+    expect(sales).to.be.deep.equal(delSalesFromDB);
   });
   afterEach(function () {
     sinon.restore();

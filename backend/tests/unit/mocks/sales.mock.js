@@ -97,6 +97,11 @@ const newSalesServiceSuccessful = {
   data: newSalesFromModel,
 };
 
+const delSalesFromDB = {
+  id: 1,
+  date,
+};
+
 module.exports = {
   salesFromDB,
   salesFromModel,
@@ -108,4 +113,5 @@ module.exports = {
   newSalesFromDB,
   newSalesFromModel,
   newSalesServiceSuccessful,
+  delSalesFromDB,
 };

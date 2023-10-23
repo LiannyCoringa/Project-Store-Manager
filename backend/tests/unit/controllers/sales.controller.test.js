@@ -117,6 +117,36 @@ describe('Realizando testes - sales controller', function () {
     expect(res.status).to.have.been.calledWith(400);
     expect(res.json).to.have.been.calledWith(sinon.match.has('message'));
   });
+  it('Deleta um sale com sucesso - 204', async function () {
+    sinon.stub(salesService, 'deleteSale').resolves({ status: 'NO_CONTENT' });
+    const req = {
+      params: { id: 1 },
+      body: { },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await salesController.deleteSale(req, res);
+
+    expect(res.status).to.have.been.calledWith(204);
+    expect(res.json).to.have.been.calledWith();
+  });
+  it('Deleta um sale com falha - 404', async function () {
+    sinon.stub(salesService, 'deleteSale').resolves({ status: 'NOT_FOUND', data: { message: 'Sale not found' } });
+    const req = {
+      params: { id: 999 },
+      body: { },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await salesController.deleteSale(req, res);
+
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith(sinon.match.has('message'));
+  });
   afterEach(function () {
     sinon.restore();
   });

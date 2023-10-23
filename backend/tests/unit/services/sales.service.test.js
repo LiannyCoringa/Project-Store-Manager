@@ -57,6 +57,24 @@ describe('Realizando testes - sales service', function () {
     expect(sale.status).to.equal('NOT_FOUND');
     expect(sale.data.message).to.equal('Product not found');
   });
+  it('Deleta um sale com sucesso', async function () {
+    sinon.stub(salesModel, 'findByIdSales').resolves(salesFromDB);
+    sinon.stub(salesModel, 'deleteSale').resolves();
+
+    const inputData = 1;
+    const sale = await salesService.deleteSale(inputData);
+
+    expect(sale.status).to.equal('NO_CONTENT');
+  });
+  it('Deleta um sale com ID inexistente', async function () {
+    sinon.stub(salesModel, 'findByIdSales').resolves([]);
+
+    const inputData = 999;
+    const sale = await salesService.deleteSale(inputData);
+
+    expect(sale.status).to.equal('NOT_FOUND');
+    expect(sale.data.message).to.equal('Sale not found');
+  });
   afterEach(function () {
     sinon.restore();
   });
