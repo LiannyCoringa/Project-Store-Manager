@@ -35,9 +35,15 @@ const insertSaleProduct = async (saleId, productId, quantity) => {
   return insertId;
 };
 
+const findSales = async () => {
+  const [sales] = await connection.execute('SELECT * FROM sales');
+  return sales;
+};
+
 module.exports = {
   findModel,
   findIdModel,
   insertSale,
   insertSaleProduct,
+  findSales,
 };
